@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <script src="../libs/jquery-1.10.1.js"></script>
+    <script src="../libs/jquery.xdomainajax.js"></script>
+    <script src="../libs/d3.v3.min.js"></script>
+    <script src="../libs/FileSaver.js"></script>
+</head>
+<body>
+
+<script>
+    var convertToInt;
+
+    $.ajax({
+        url: "http://unglobalpulse.net/ewec/",
+        type: 'GET',
+        cache: false,
+        success: function(data) {
+            var root,allData, body, table;
+            root = $("<div></div>")
+            root.html(data.responseText)
+
+            // var content = root.find("#wikitable"); // find all the nodes that have ID "content"
+            var trs = root.find("table tr:gt(0)"); // search in all "content" nodes for nodes of class ".mw-headline"
+
+            var data = [];
+
+            // add header
+            var header = "date,womens";
+            data.push(header);
+
+            $.each(trs, function(index, value) {
+
+                var cols = $(value).find('td')
+
+                var d = $(cols[0]).text().trim();
+                var w = convertToInt($(cols[3]).text());
+
+                var str = (d + ',' + w);
+
+                data.push(str);
+              
+            });
+
+            // console.log(data); // print text
+			
+			  saveToFile(data,"undata.csv")
+        },
+        error: function() {
+            return console.log("error");
+        }
+    });
+
+    convertToInt = function(s) {
+        if (s == ""){
+          return ""
+        }
+        else {
+          return parseInt(s.replace(/,/g, ""), 10);
+        }
+    };
+	
+    /* takes an array of strings
+       and writes them line by line into a file given by filename
+     */
+    var saveToFile = function(arrayOfLines, fileName) {
+       /* adds linebreaks at the end*/
+       var blob, blobText;
+       blobText = arrayOfLines.map(function(d) {
+         if (d.endsWith("\n")) {
+           return d;
+         } else {
+           return d + "\n";
+         }
+       });
+       blob = new Blob(blobText, {
+         type: "text/plain;charset=utf-8"
+       });
+       return saveAs(blob, fileName);
+     };
+
+     String.prototype.endsWith = function(suffix) {
+       return this.indexOf(suffix, this.length - suffix.length) !== -1;
+     };
+	
+
+
+
+</script>
+
+
+</body>
+</html>

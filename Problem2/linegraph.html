@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="../libs/d3.v3.min.js"></script>
+    <style>
+
+        body {
+          font-family: "Helvetica Neue", Helvetica, sans-serif;
+          font-size: 12px;
+        }
+        
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: lightgrey; 
+            shape-rendering: crispEdges;
+        }
+
+        .axis text{
+            font-color: lightgrey;
+        }
+
+        .label{
+            font-color: lightgrey;
+        }
+
+        .dataArea {
+            stroke: 1px steelblue;
+            fill:steelblue;
+            fill-opacity:0.5;
+            clip-path: url(#clip);
+        }
+
+        .dot1 {
+          fill: steelblue;
+        }
+
+        .dot2 {
+            fill: orangered;
+        }
+
+        .dot3 {
+            fill: forestgreen;
+        }
+
+        .dot4 {
+            fill: mediumvioletred;
+        }
+
+        .dot5 {
+            fill: indigo;
+        }
+
+        .inplt{
+            opacity: 0.45;
+        }
+
+        .line1 {
+          fill: none;
+          stroke-width: 1;
+          stroke: steelblue;
+        }
+
+        .line2 {
+          fill: none;
+          stroke-width: 1;
+          stroke: orangered;
+        }
+
+        .line3 {
+          fill: none;
+          stroke-width: 1;
+          stroke: forestgreen;
+        }
+
+        .line4 {
+          fill: none;
+          stroke-width: 1;
+          stroke: mediumvioletred;
+        }
+
+        .line5 {
+          fill: none;
+          stroke-width: 1;
+          stroke: indigo;
+        }
+
+
+
+
+
+    </style>
+
+</head>
+<body>
+    <div id="vis"></div>
+
+
+	<script src = "linegraph.js"></script>
+
+
+</body>
+</html>

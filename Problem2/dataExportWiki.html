@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <script src="../libs/jquery-1.10.1.js"></script>
+    <script src="../libs/jquery.xdomainajax.js"></script>
+    <script src="../libs/d3.v3.min.js"></script>
+    <script src="../libs/FileSaver.js"></script>
+</head>
+<body>
+
+<script>
+    var convertToInt;
+
+    $.ajax({
+        url: "http://en.wikipedia.org/wiki/World_population_estimates",
+        type: 'GET',
+        cache: false,
+        success: function(data) {
+            var root,allData, body, table;
+            root = $("<div></div>")
+            root.html(data.responseText)
+
+            // var content = root.find("#wikitable"); // find all the nodes that have ID "content"
+            var trs = root.find(".wikitable tr:gt(10)"); // search in all "content" nodes for nodes of class ".mw-headline"
+
+            var data = [];
+
+            // add header
+            var header = "year,USCensus,PopulationBureau,UN,HYDE,Maddison";
+            data.push(header);
+
+            $.each(trs, function(index, value) {
+
+                var cols = $(value).find('td')
+
+                var year = convertToInt($(cols[0]).text());
+                var est1 = convertToInt($(cols[1]).text());
+                var est2 = convertToInt($(cols[2]).text());
+                var est3 = convertToInt($(cols[3]).text());
+                var est4 = convertToInt($(cols[4]).text());
+                var est5 = convertToInt($(cols[5]).text());
+
+                if (est1 || est2 || est3 || est4 || est5){
+                
+                  var str = year + ',' + est1 + ',' + est2 + ',' + est3 + ',' + est4 + ',' + est5;
+                  data.push(str);
+
+                }
+            });
+
+            // console.log(data); // print text
+			
+			  saveToFile(data,"data.csv")
+        },
+        error: function() {
+            return console.log("error");
+        }
+    });
+
+    convertToInt = function(s) {
+        if (s == ""){
+          return ""
+        }
+        else {
+          return parseInt(s.replace(/,/g, ""), 10);
+        }
+    };
+	
+    /* takes an array of strings
+       and writes them line by line into a file given by filename
+     */
+    var saveToFile = function(arrayOfLines, fileName) {
+       /* adds linebreaks at the end*/
+       var blob, blobText;
+       blobText = arrayOfLines.map(function(d) {
+         if (d.endsWith("\n")) {
+           return d;
+         } else {
+           return d + "\n";
+         }
+       });
+       blob = new Blob(blobText, {
+         type: "text/plain;charset=utf-8"
+       });
+       return saveAs(blob, fileName);
+     };
+
+     String.prototype.endsWith = function(suffix) {
+       return this.indexOf(suffix, this.length - suffix.length) !== -1;
+     };
+	
+
+
+
+</script>
+
+
+</body>
+</html>
