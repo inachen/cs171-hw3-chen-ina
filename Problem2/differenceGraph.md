@@ -1,0 +1,1 @@
+I choose this design because this was the design that my group at design studio choose. The line graph provides a clear representation of the data over time. The error can be seen through the error band which can be visualized more clearly than error bars. 
